@@ -26,8 +26,11 @@
           return "#"+res.join('')
         }
       const childs = document.getElementsByClassName('hh')
+      const texts = ['Coco','Funky']
       function recursiveSetOut (){
-        childs.item(randInt(0,childs.length-1)).style.color=randColor()
+        const ch = childs.item(randInt(0,childs.length-1))
+        ch.style.color=randColor()
+        ch.innerHTML=texts[randInt(0,texts.length-1)]
         setTimeout(recursiveSetOut,randInt(10,100))
       }
       recursiveSetOut()
