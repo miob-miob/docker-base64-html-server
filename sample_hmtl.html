@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="funk" style="display: flex;align-content: center;padding: 1em;flex-flow: column; align-items: center">
+        <h1 class="hh">Funky</h1>
+        <h2 class="hh">Funky</h2>
+        <h3 class="hh">Funky</h3>
+        <h4 class="hh">Funky</h4>
+        <h5 class="hh">Funky</h5>
+        <h6 class="hh">Funky</h6>
+    </div>
+</body>
+
+<script>
+    function colors(){
+        function randInt(from=0,to=10){
+            return Math.floor(Math.random()*((to-from)+1))
+        }
+        function randColor(){
+          const color = [randInt(0,255),randInt(0,255),randInt(0,255)]
+          let res = color.map(c=>c.toString(16).padStart(2,'0'))
+          return "#"+res.join('')
+        }
+      const childs = document.getElementsByClassName('hh')
+      function recursiveSetOut (){
+        childs.item(randInt(0,childs.length-1)).style.color=randColor()
+        setTimeout(recursiveSetOut,randInt(10,100))
+      }
+      recursiveSetOut()
+    }
+    window.addEventListener('load',colors)
+</script>
+</html>
