@@ -1,2 +1,4 @@
 *
 !/nginx_server_template.conf
+!/html_from_env.sh
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Base64 HTML server </title>
+</head>
+<body>
+<h2>base64 html served by nginx (default html)</h2>
+
+<hr/>
+<div>
+    <h3>Motivation and use-cases</h3>
+    <p>
+        If you want to quickly test same static pages, without volumes and complex configuration in container-friendly environment,
+        you may find this one helpful ;)
+    </p>
+    <hr/>
+
+    <h3>Usage:</h3>
+    <p style="padding-top: 1em">
+        To provide your html, use <strong>BASE64_HTML</strong> environment variable.
+    </p>
+    <p>Take your html file, convert it, to base64, for example:</p>
+    <pre style="background-color: #f0f0f0">
+        <code style="color: #808080">// output base64 encoded html file</code>
+        cat my_simple_page.html | base64
+    </pre>
+
+    <hr/>
+    <p>
+        To run container with your html try something like that:
+
+    </p>
+    <pre style="background-color: #f0f0f0; overflow-wrap: break-word; white-space: pre-wrap">
+        html_as_base64=PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CiAgICA8bWV0YSBjaGFyc2V0PSJVVEYtOCI+CiAgICA8dGl0bGU+VGl0bGU8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5PgogICAgPGRpdiBpZD0iZnVuayIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7YWxpZ24tY29udGVudDogY2VudGVyO3BhZGRpbmc6IDFlbTtmbGV4LWZsb3c6IGNvbHVtbjsgYWxpZ24taXRlbXM6IGNlbnRlciI+CiAgICAgICAgPGgxIGNsYXNzPSJoaCI+RnVua3k8L2gxPgogICAgICAgIDxoMiBjbGFzcz0iaGgiPkZ1bmt5PC9oMj4KICAgICAgICA8aDMgY2xhc3M9ImhoIj5GdW5reTwvaDM+CiAgICAgICAgPGg0IGNsYXNzPSJoaCI+RnVua3k8L2g0PgogICAgICAgIDxoNSBjbGFzcz0iaGgiPkZ1bmt5PC9oNT4KICAgICAgICA8aDYgY2xhc3M9ImhoIj5GdW5reTwvaDY+CiAgICA8L2Rpdj4KPC9ib2R5PgoKPHNjcmlwdD4KICAgIGZ1bmN0aW9uIGNvbG9ycygpewogICAgICAgIGZ1bmN0aW9uIHJhbmRJbnQoZnJvbT0wLHRvPTEwKXsKICAgICAgICAgICAgcmV0dXJuIE1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSooKHRvLWZyb20pKzEpKQogICAgICAgIH0KICAgICAgICBmdW5jdGlvbiByYW5kQ29sb3IoKXsKICAgICAgICAgIGNvbnN0IGNvbG9yID0gW3JhbmRJbnQoMCwyNTUpLHJhbmRJbnQoMCwyNTUpLHJhbmRJbnQoMCwyNTUpXQogICAgICAgICAgbGV0IHJlcyA9IGNvbG9yLm1hcChjPT5jLnRvU3RyaW5nKDE2KS5wYWRTdGFydCgyLCcwJykpCiAgICAgICAgICByZXR1cm4gIiMiK3Jlcy5qb2luKCcnKQogICAgICAgIH0KICAgICAgY29uc3QgY2hpbGRzID0gZG9jdW1lbnQuZ2V0RWxlbWVudHNCeUNsYXNzTmFtZSgnaGgnKQogICAgICBjb25zdCB0ZXh0cyA9IFsnQ29jbycsJ0Z1bmt5J10KICAgICAgZnVuY3Rpb24gcmVjdXJzaXZlU2V0T3V0ICgpewogICAgICAgIGNvbnN0IGNoID0gY2hpbGRzLml0ZW0ocmFuZEludCgwLGNoaWxkcy5sZW5ndGgtMSkpCiAgICAgICAgY2guc3R5bGUuY29sb3I9cmFuZENvbG9yKCkKICAgICAgICBjaC5pbm5lckhUTUw9dGV4dHNbcmFuZEludCgwLHRleHRzLmxlbmd0aC0xKV0KICAgICAgICBzZXRUaW1lb3V0KHJlY3Vyc2l2ZVNldE91dCxyYW5kSW50KDEwLDEwMCkpCiAgICAgIH0KICAgICAgcmVjdXJzaXZlU2V0T3V0KCkKICAgIH0KICAgIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdsb2FkJyxjb2xvcnMpCjwvc2NyaXB0Pgo8L2h0bWw+
+
+
+        docker run --rm -p 8888:80 -e BASE64_HTML=$html_as_base64 miob01/base64-html-server:latest
+    </pre>
+
+    <p>See served page on <strong>http://localhost:8888/</strong></p>
+
+
+</div>
+</body>
+</html>
