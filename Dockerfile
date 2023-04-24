@@ -8,9 +8,21 @@ ENV NGINX_ROOT_DIR=/usr/share/nginx/html
 
 # script that will create html file from ENV
 COPY html_from_env.sh /docker-entrypoint.d/html_from_env.sh
+RUN chown nginx:nginx /docker-entrypoint.d/html_from_env.sh
 RUN chmod +x /docker-entrypoint.d/html_from_env.sh
+
+# tweaks to make this image work for nginx:nginx u:g
+RUN chown -R nginx:nginx /etc/nginx
+RUN chown -R nginx:nginx /usr/share/nginx/
+RUN chown -R nginx:nginx /var/cache/nginx/
+RUN touch /var/run/nginx.pid
+RUN chown nginx:nginx /var/run/nginx.pid
+
+
 
 # template to override conf with env variables
 # for more info see https://github.com/nginxinc/docker-nginx/blob/master/mainline/debian/20-envsubst-on-templates.sh
 COPY nginx_server_template.conf /etc/nginx/templates/default.conf.template
+
+USER nginx:nginx
 
