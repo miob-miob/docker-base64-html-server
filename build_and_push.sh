@@ -18,15 +18,17 @@ new_full=${repo}:${new_version}
 
 #docker login
 
-# default buildx instance is not capable of multiplatform builds, we can create container to work for us as builder
-#docker buildx create --driver docker-container --platform linux/arm64,linux/arm/v8,linux/amd64 --name miob_builder --use --bootstrap
-docker buildx use miob_builder
+
 docker pull ${new_full}
 if [ $? -eq 0 ]; then
   echo -e "\n${RED}Tag: ${DICKEN_RED} ${new_full} ${RED} already exists!${NO_COLOUR}"
   exit 1
 fi
 set -e
+
+# default buildx instance is not capable of multiplatform builds, we can create container to work for us as builder
+#docker buildx create --driver docker-container --platform linux/arm64,linux/arm/v8,linux/amd64 --name miob_builder --use --bootstrap
+docker buildx use miob_builder
 docker buildx build -f Dockerfile --platform linux/amd64,linux/arm64/v8 -t $latest_full -t $new_full --push .
 echo -e "\n${GREEN} Done ;) ${NO_COLOUR}"
 
