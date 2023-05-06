@@ -2,7 +2,7 @@
 
 set -u
 
-new_version=0.1.2
+new_version=0.2.0
 
 #colors
 DICKEN_GREEN='\033[1;32m'
