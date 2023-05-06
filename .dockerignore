@@ -1,4 +1,6 @@
 *
 !/nginx_server_template.conf
 !/html_from_env.sh
+!/hack_ro_fs.sh
+!/custom_nginx.conf
 

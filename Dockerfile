@@ -6,25 +6,41 @@ ENV BASE64_HTML=PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CiAgICA8bWV0
 # non priveleged port
 ENV NGINX_PORT=8080
 ENV NGINX_SERVER_NAME=localhost
-ENV NGINX_ROOT_DIR=/usr/share/nginx/html
+ENV NGINX_ROOT_DIR=/tmp/nginx/html
+
+# numbers here on start of file is for ordering of bootsdtrap sh scripts see: https://github.com/nginxinc/docker-nginx/tree/master/entrypoint
+
+# this will copy all neseccary files and creates symlinks in order to
+# be able run container in read only mode and only place where it will write is  /tmp/nginx
+# in order do so mount writable volume/mount on /tmp/nginx
+COPY hack_ro_fs.sh /docker-entrypoint.d/01-hack_ro_fs.sh
+RUN chmod +x /docker-entrypoint.d/01-hack_ro_fs.sh
+
+
 
 # script that will create html file from ENV
-COPY html_from_env.sh /docker-entrypoint.d/html_from_env.sh
-RUN chown nginx:nginx /docker-entrypoint.d/html_from_env.sh
-RUN chmod +x /docker-entrypoint.d/html_from_env.sh
+COPY html_from_env.sh /docker-entrypoint.d/40-html_from_env.sh
+RUN chmod +x /docker-entrypoint.d/40-html_from_env.sh
+
+# diagnose
+#RUN echo "env" > /docker-entrypoint.d/30-woho.sh
+#RUN chmod +x /docker-entrypoint.d/30-woho.sh
 
 # tweaks to make this image work for nginx:nginx u:g
-RUN chown -R nginx:nginx /etc/nginx
-RUN chown -R nginx:nginx /usr/share/nginx/
-RUN chown -R nginx:nginx /var/cache/nginx/
-RUN touch /var/run/nginx.pid
-RUN chown nginx:nginx /var/run/nginx.pid
-
+COPY custom_nginx.conf /etc/nginx/nginx.conf
 
 
 # template to override conf with env variables
-# for more info see https://github.com/nginxinc/docker-nginx/blob/master/mainline/debian/20-envsubst-on-templates.sh
 COPY nginx_server_template.conf /etc/nginx/templates/default.conf.template
 
-USER nginx:nginx
+#ENVS needed in in https://github.com/nginxinc/docker-nginx/blob/master/entrypoint/20-envsubst-on-templates.sh
+ENV NGINX_ENVSUBST_TEMPLATE_DIR /tmp/nginx/templates
+ENV NGINX_ENVSUBST_OUTPUT_DIR /tmp/nginx/conf.d
+
+# remove ip6 support (it would complicate stuff)
+RUN rm /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+RUN mkdir /tmp/nginx
+RUN chown -R nginx:nginx /tmp/nginx/
+
+USER 101
 
